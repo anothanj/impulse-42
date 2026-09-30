@@ -1,0 +1,21 @@
+[gd_scene format=3 uid="uid://bwwsg7mie36pc"]
+
+[ext_resource type="PackedScene" uid="uid://bkouuru43igg0" path="res://scenes/kernel.tscn" id="1_uwrxv"]
+[ext_resource type="PackedScene" uid="uid://b2nbnw8g70bim" path="res://scenes/pusher.tscn" id="2_yqjtg"]
+
+[node name="Game" type="Node2D" unique_id=172776468]
+
+[node name="Kernel" parent="." unique_id=679810165 instance=ExtResource("1_uwrxv")]
+position = Vector2(488, 444)
+
+[node name="Pusher" parent="." unique_id=923092446 instance=ExtResource("2_yqjtg")]
+position = Vector2(158, 464)
+
+[node name="Pusher2" parent="." unique_id=2106086036 instance=ExtResource("2_yqjtg")]
+position = Vector2(222, 470)
+
+[node name="Pusher3" parent="." unique_id=422475725 instance=ExtResource("2_yqjtg")]
+position = Vector2(175, 520)
+
+[node name="Pusher4" parent="." unique_id=1291788624 instance=ExtResource("2_yqjtg")]
+position = Vector2(118, 526)
