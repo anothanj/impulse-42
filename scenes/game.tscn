@@ -2,20 +2,35 @@
 
 [ext_resource type="PackedScene" uid="uid://bkouuru43igg0" path="res://scenes/kernel.tscn" id="1_uwrxv"]
 [ext_resource type="PackedScene" uid="uid://b2nbnw8g70bim" path="res://scenes/pusher.tscn" id="2_yqjtg"]
+[ext_resource type="PackedScene" uid="uid://cto6h8bd5ad28" path="res://scenes/piston.tscn" id="3_lnu2h"]
 
 [node name="Game" type="Node2D" unique_id=172776468]
 
 [node name="Kernel" parent="." unique_id=679810165 instance=ExtResource("1_uwrxv")]
 position = Vector2(488, 444)
 
-[node name="Pusher" parent="." unique_id=923092446 instance=ExtResource("2_yqjtg")]
-position = Vector2(158, 464)
+[node name="Piston" parent="." unique_id=872141968 instance=ExtResource("3_lnu2h")]
+position = Vector2(271, 429)
 
-[node name="Pusher2" parent="." unique_id=2106086036 instance=ExtResource("2_yqjtg")]
-position = Vector2(222, 470)
+[node name="Piston2" parent="." unique_id=1020889759 instance=ExtResource("3_lnu2h")]
+position = Vector2(376, 428)
 
-[node name="Pusher3" parent="." unique_id=422475725 instance=ExtResource("2_yqjtg")]
-position = Vector2(175, 520)
+[node name="Enemies" type="Node2D" parent="." unique_id=1406160509]
 
-[node name="Pusher4" parent="." unique_id=1291788624 instance=ExtResource("2_yqjtg")]
-position = Vector2(118, 526)
+[node name="Pusher5" parent="Enemies" unique_id=1116873662 instance=ExtResource("2_yqjtg")]
+position = Vector2(209, 491)
+
+[node name="Pusher6" parent="Enemies" unique_id=31930704 instance=ExtResource("2_yqjtg")]
+position = Vector2(144, 500)
+
+[node name="Pusher" parent="Enemies" unique_id=923092446 instance=ExtResource("2_yqjtg")]
+position = Vector2(158, 445)
+
+[node name="Pusher2" parent="Enemies" unique_id=2106086036 instance=ExtResource("2_yqjtg")]
+position = Vector2(209, 444)
+
+[node name="Pusher3" parent="Enemies" unique_id=422475725 instance=ExtResource("2_yqjtg")]
+position = Vector2(185, 446)
+
+[node name="Pusher4" parent="Enemies" unique_id=1291788624 instance=ExtResource("2_yqjtg")]
+position = Vector2(131, 446)

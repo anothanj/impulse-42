@@ -1,6 +1,6 @@
 extends RigidBody2D
 
-@onready var kernel: RigidBody2D = $"../Kernel"
+@onready var kernel: RigidBody2D = $"../../Kernel"
 @export var move_force: float = 400.0
 @export var max_speed: float = 150.0
 @export var turn_speed: float = 8.0 

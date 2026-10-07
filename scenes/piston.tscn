@@ -1,0 +1,52 @@
+[gd_scene format=3 uid="uid://cto6h8bd5ad28"]
+
+[ext_resource type="Script" uid="uid://5ykwtte3d1td" path="res://scripts/piston.gd" id="1_8y48j"]
+[ext_resource type="Texture2D" uid="uid://ccpgn45b7kau6" path="res://assets/piston-sheet.png" id="1_ei3h4"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8y48j"]
+atlas = ExtResource("1_ei3h4")
+region = Rect2(0, 0, 32, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vnmsg"]
+atlas = ExtResource("1_ei3h4")
+region = Rect2(32, 0, 32, 64)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_vyxsm"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8y48j")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_vnmsg")
+}],
+"loop": 0,
+"name": &"default",
+"speed": 15.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_a3usv"]
+size = Vector2(32, 32)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_vyxsm"]
+size = Vector2(32, 32)
+
+[node name="Piston" type="StaticBody2D" unique_id=872141968]
+script = ExtResource("1_8y48j")
+
+[node name="Sprite2D" type="AnimatedSprite2D" parent="." unique_id=1861592978]
+texture_filter = 1
+sprite_frames = SubResource("SpriteFrames_vyxsm")
+frame_progress = 0.9108354
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=908697475]
+position = Vector2(0, -16)
+shape = SubResource("RectangleShape2D_a3usv")
+
+[node name="TriggerArea" type="Area2D" parent="." unique_id=1045433538]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TriggerArea" unique_id=1580687782]
+position = Vector2(0, 16)
+shape = SubResource("RectangleShape2D_vyxsm")
+
+[connection signal="body_entered" from="TriggerArea" to="." method="_on_trigger_area_body_entered"]
