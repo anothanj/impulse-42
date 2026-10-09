@@ -5,6 +5,8 @@
 [ext_resource type="PackedScene" uid="uid://b2nbnw8g70bim" path="res://scenes/pusher.tscn" id="2_yqjtg"]
 [ext_resource type="PackedScene" uid="uid://cto6h8bd5ad28" path="res://scenes/piston.tscn" id="3_lnu2h"]
 [ext_resource type="Script" uid="uid://dd16msjsroel6" path="res://scripts/boundaries.gd" id="4_lbhrr"]
+[ext_resource type="Script" uid="uid://eepsg2t4whh" path="res://scripts/placement_manager.gd" id="6_p57ef"]
+[ext_resource type="Texture2D" uid="uid://ccpgn45b7kau6" path="res://assets/piston-sheet.png" id="7_u5sy4"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_p57ef"]
 texture = ExtResource("1_iywne")
@@ -18,6 +20,21 @@ sources/3 = SubResource("TileSetAtlasSource_p57ef")
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_vyxsm"]
 size = Vector2(894, 479)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ghost"]
+atlas = ExtResource("7_u5sy4")
+region = Rect2(0, 0, 32, 64)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_ghost"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ghost")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
 
 [node name="Game" type="Node2D" unique_id=172776468]
 
@@ -64,5 +81,18 @@ script = ExtResource("4_lbhrr")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Boundaries" unique_id=1420232570]
 position = Vector2(509, 369)
 shape = SubResource("RectangleShape2D_vyxsm")
+
+[node name="PlacementManager" type="Node2D" parent="." unique_id=399912150 node_paths=PackedStringArray("tilemap", "defenders_container", "kernel")]
+script = ExtResource("6_p57ef")
+tilemap = NodePath("../TileMapLayer")
+defenders_container = NodePath("../Defenders")
+kernel = NodePath("../Kernel")
+piston_scene = ExtResource("3_lnu2h")
+
+[node name="GhostPreview" type="Node2D" parent="PlacementManager" unique_id=110258959]
+
+[node name="Sprite2D" type="AnimatedSprite2D" parent="PlacementManager/GhostPreview" unique_id=30288575]
+texture_filter = 1
+sprite_frames = SubResource("SpriteFrames_ghost")
 
 [connection signal="body_exited" from="Boundaries" to="Boundaries" method="_on_body_exited"]
