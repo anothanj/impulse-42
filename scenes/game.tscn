@@ -31,7 +31,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_ghost")
 }],
-"loop": true,
+"loop": 1,
 "name": &"default",
 "speed": 5.0
 }]
@@ -44,43 +44,41 @@ tile_set = SubResource("TileSet_vyxsm")
 rendering_quadrant_size = 32
 
 [node name="Kernel" parent="." unique_id=679810165 instance=ExtResource("1_uwrxv")]
-position = Vector2(488, 444)
+position = Vector2(911, 366)
 
 [node name="Enemies" type="Node2D" parent="." unique_id=1406160509]
 
 [node name="Pusher5" parent="Enemies" unique_id=1116873662 instance=ExtResource("2_yqjtg")]
-position = Vector2(209, 491)
+position = Vector2(219, 373)
 
 [node name="Pusher6" parent="Enemies" unique_id=31930704 instance=ExtResource("2_yqjtg")]
-position = Vector2(144, 500)
+position = Vector2(251, 372)
 
 [node name="Pusher" parent="Enemies" unique_id=923092446 instance=ExtResource("2_yqjtg")]
-position = Vector2(158, 445)
+position = Vector2(153, 372)
 
 [node name="Pusher2" parent="Enemies" unique_id=2106086036 instance=ExtResource("2_yqjtg")]
-position = Vector2(209, 444)
+position = Vector2(120, 371)
 
 [node name="Pusher3" parent="Enemies" unique_id=422475725 instance=ExtResource("2_yqjtg")]
-position = Vector2(185, 446)
+position = Vector2(87, 371)
 
 [node name="Pusher4" parent="Enemies" unique_id=1291788624 instance=ExtResource("2_yqjtg")]
-position = Vector2(131, 446)
+position = Vector2(186, 373)
 
 [node name="Defenders" type="Node2D" parent="." unique_id=1670609904]
 
-[node name="Piston" parent="Defenders" unique_id=872141968 instance=ExtResource("3_lnu2h")]
-position = Vector2(227, 384)
-
-[node name="Piston2" parent="Defenders" unique_id=1020889759 instance=ExtResource("3_lnu2h")]
-position = Vector2(412, 438)
-rotation = 1.5707964
-
-[node name="Boundaries" type="Area2D" parent="." unique_id=378089794]
+[node name="Boundaries" type="Area2D" parent="." unique_id=378089794 node_paths=PackedStringArray("enemies", "kernel", "game", "game_over")]
 script = ExtResource("4_lbhrr")
+enemies = NodePath("../Enemies")
+kernel = NodePath("../Kernel")
+game = NodePath("..")
+game_over = NodePath("../Game Over")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Boundaries" unique_id=1420232570]
-position = Vector2(509, 369)
+position = Vector2(512, 368)
 shape = SubResource("RectangleShape2D_vyxsm")
+metadata/_edit_lock_ = true
 
 [node name="PlacementManager" type="Node2D" parent="." unique_id=399912150 node_paths=PackedStringArray("tilemap", "defenders_container", "kernel")]
 script = ExtResource("6_p57ef")
@@ -94,5 +92,13 @@ piston_scene = ExtResource("3_lnu2h")
 [node name="Sprite2D" type="AnimatedSprite2D" parent="PlacementManager/GhostPreview" unique_id=30288575]
 texture_filter = 1
 sprite_frames = SubResource("SpriteFrames_ghost")
+
+[node name="Game Over" type="Label" parent="." unique_id=2130817448]
+visible = false
+offset_left = 455.0
+offset_top = 193.0
+offset_right = 534.0
+offset_bottom = 216.0
+text = "You Loose"
 
 [connection signal="body_exited" from="Boundaries" to="Boundaries" method="_on_body_exited"]
