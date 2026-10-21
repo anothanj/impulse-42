@@ -99,6 +99,6 @@ offset_left = 455.0
 offset_top = 193.0
 offset_right = 534.0
 offset_bottom = 216.0
-text = "You Loose"
+text = "You Lose"
 
 [connection signal="body_exited" from="Boundaries" to="Boundaries" method="_on_body_exited"]

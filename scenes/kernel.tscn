@@ -10,6 +10,7 @@ radius = 16.0
 [node name="Kernel" type="RigidBody2D" unique_id=679810165]
 texture_filter = 1
 mass = 1000.0
+linear_damp = 2.0
 physics_material_override = SubResource("PhysicsMaterial_uwrxv")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=706727948]

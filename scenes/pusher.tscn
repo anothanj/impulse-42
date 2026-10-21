@@ -9,6 +9,7 @@
 size = Vector2(32, 32)
 
 [node name="Pusher" type="RigidBody2D" unique_id=923092446]
+mass = 3.0
 physics_material_override = SubResource("PhysicsMaterial_xqhj7")
 script = ExtResource("2_xqhj7")
 
