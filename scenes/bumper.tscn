@@ -1,0 +1,40 @@
+[gd_scene format=3]
+
+[ext_resource type="Texture2D" uid="uid://dwrs2mp6n2ffo" path="res://assets/bumper.png" id="1_tex"]
+[ext_resource type="Script" path="res://scripts/bumper.gd" id="2_scr"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_bump"]
+friction = 0.0
+bounce = 1.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_body"]
+radius = 14.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_bump"]
+radius = 20.0
+
+[node name="Bumper" type="StaticBody2D"]
+collision_layer = 1
+collision_mask = 0
+physics_material_override = SubResource("PhysicsMaterial_bump")
+script = ExtResource("2_scr")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_tex")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_body")
+
+[node name="BumpArea" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BumpArea"]
+shape = SubResource("CircleShape2D_bump")
+
+[node name="CooldownTimer" type="Timer" parent="."]
+wait_time = 0.6
+one_shot = true
+
+[connection signal="body_entered" from="BumpArea" to="." method="_on_bump_area_body_entered"]
+[connection signal="timeout" from="CooldownTimer" to="." method="_on_cooldown_timer_timeout"]

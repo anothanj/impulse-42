@@ -1,0 +1,25 @@
+[gd_scene format=3]
+
+[ext_resource type="Texture2D" uid="uid://udxtyftgmpbc" path="res://assets/juggernaut.png" id="1_tex"]
+[ext_resource type="Script" uid="uid://fp8jmni3g6na" path="res://scripts/pusher.gd" id="2_scr"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_jugg"]
+size = Vector2(24, 24)
+
+[node name="Juggernaut" type="RigidBody2D"]
+collision_layer = 4
+collision_mask = 7
+mass = 7.0
+linear_damp = 0.6
+script = ExtResource("2_scr")
+move_force = 750.0
+max_speed = 75.0
+turn_speed = 3.5
+credit_value = 60
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(0.8, 0.8)
+texture = ExtResource("1_tex")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_jugg")

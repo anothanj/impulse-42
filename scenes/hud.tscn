@@ -1,0 +1,166 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" uid="uid://cjik7nsxxhpa" path="res://scripts/hud.gd" id="1_hud"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bar"]
+bg_color = Color(0.08, 0.09, 0.12, 0.88)
+border_width_top = 2
+border_width_bottom = 2
+border_color = Color(0.2, 0.25, 0.35, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_modal"]
+bg_color = Color(0.08, 0.09, 0.12, 0.96)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.8, 0.65, 0.2, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="LabelSettings" id="LabelSettings_end"]
+font_size = 28
+
+[node name="HUD" type="CanvasLayer"]
+script = ExtResource("1_hud")
+
+[node name="TopBar" type="PanelContainer" parent="."]
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 44.0
+grow_horizontal = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_bar")
+
+[node name="MarginContainer" type="MarginContainer" parent="TopBar"]
+layout_mode = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 6
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 6
+
+[node name="HBoxContainer" type="HBoxContainer" parent="TopBar/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 24
+
+[node name="CreditsLabel" type="Label" parent="TopBar/MarginContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Credits: 150"
+
+[node name="WaveLabel" type="Label" parent="TopBar/MarginContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Wave: 0 / 5"
+
+[node name="StatusLabel" type="Label" parent="TopBar/MarginContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Build Phase"
+
+[node name="Spacer" type="Control" parent="TopBar/MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="StartWaveButton" type="Button" parent="TopBar/MarginContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+focus_mode = 0
+text = "Start Wave (Space)"
+
+[node name="BottomBar" type="PanelContainer" parent="."]
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -64.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_bar")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="BottomBar"]
+layout_mode = 2
+alignment = 1
+
+[node name="TowerButtons" type="HBoxContainer" parent="BottomBar/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 16
+alignment = 1
+
+[node name="BtnPiston" type="Button" parent="BottomBar/VBoxContainer/TowerButtons"]
+unique_name_in_owner = true
+layout_mode = 2
+focus_mode = 0
+text = "[1] Piston (50)"
+
+[node name="BtnBumper" type="Button" parent="BottomBar/VBoxContainer/TowerButtons"]
+unique_name_in_owner = true
+layout_mode = 2
+focus_mode = 0
+text = "[2] Bumper (25)"
+
+[node name="ControlTipsLabel" type="Label" parent="BottomBar/VBoxContainer"]
+layout_mode = 2
+text = "[1-2] Select Tower  |  [R] Rotate  |  [L-Click] Place  |  [R-Click] Toggle Preview  |  [Space] Start Wave"
+horizontal_alignment = 1
+
+[node name="EndOverlay" type="ColorRect" parent="."]
+unique_name_in_owner = true
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.45)
+
+[node name="EndPanel" type="PanelContainer" parent="EndOverlay"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -190.0
+offset_top = -95.0
+offset_right = 190.0
+offset_bottom = 95.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_modal")
+
+[node name="MarginContainer" type="MarginContainer" parent="EndOverlay/EndPanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 24
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 24
+theme_override_constants/margin_bottom = 20
+
+[node name="VBoxContainer" type="VBoxContainer" parent="EndOverlay/EndPanel/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 12
+alignment = 1
+
+[node name="EndTitle" type="Label" parent="EndOverlay/EndPanel/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "VICTORY!"
+label_settings = SubResource("LabelSettings_end")
+horizontal_alignment = 1
+
+[node name="EndSubtext" type="Label" parent="EndOverlay/EndPanel/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "All enemy waves repelled!"
+horizontal_alignment = 1
+
+[node name="RestartButton" type="Button" parent="EndOverlay/EndPanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+focus_mode = 0
+text = "Play Again"
+
+[connection signal="pressed" from="TopBar/MarginContainer/HBoxContainer/StartWaveButton" to="." method="_on_start_wave_button_pressed"]
+[connection signal="pressed" from="BottomBar/VBoxContainer/TowerButtons/BtnPiston" to="." method="_on_btn_piston_pressed"]
+[connection signal="pressed" from="BottomBar/VBoxContainer/TowerButtons/BtnBumper" to="." method="_on_btn_bumper_pressed"]
+[connection signal="pressed" from="EndOverlay/EndPanel/MarginContainer/VBoxContainer/RestartButton" to="." method="_on_restart_button_pressed"]

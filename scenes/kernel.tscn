@@ -1,20 +1,22 @@
 [gd_scene format=3 uid="uid://bkouuru43igg0"]
 
 [ext_resource type="Texture2D" uid="uid://br6gvua32wsoi" path="res://assets/kernel.png" id="1_og0lm"]
-
-[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_uwrxv"]
+[ext_resource type="Script" uid="uid://b1gweuu56u25a" path="res://scripts/kernel.gd" id="2_scr"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_vyxsm"]
-radius = 16.0
+radius = 32.0
 
-[node name="Kernel" type="RigidBody2D" unique_id=679810165]
-texture_filter = 1
-mass = 1000.0
-linear_damp = 2.0
-physics_material_override = SubResource("PhysicsMaterial_uwrxv")
+[node name="Kernel" type="RigidBody2D" unique_id=679810165 groups=["kernel"]]
+collision_layer = 2
+collision_mask = 5
+mass = 65.0
+can_sleep = false
+contact_monitor = true
+max_contacts_reported = 32
+linear_damp = 1.5
+script = ExtResource("2_scr")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=706727948]
-scale = Vector2(2, 2)
 shape = SubResource("CircleShape2D_vyxsm")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=396966550]

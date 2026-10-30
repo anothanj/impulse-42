@@ -7,6 +7,12 @@
 [ext_resource type="Script" uid="uid://dd16msjsroel6" path="res://scripts/boundaries.gd" id="4_lbhrr"]
 [ext_resource type="Script" uid="uid://eepsg2t4whh" path="res://scripts/placement_manager.gd" id="6_p57ef"]
 [ext_resource type="Texture2D" uid="uid://ccpgn45b7kau6" path="res://assets/piston-sheet.png" id="7_u5sy4"]
+[ext_resource type="Texture2D" uid="uid://dwrs2mp6n2ffo" path="res://assets/bumper.png" id="8_bump_tex"]
+[ext_resource type="PackedScene" path="res://scenes/bumper.tscn" id="9_bump"]
+[ext_resource type="PackedScene" path="res://scenes/juggernaut.tscn" id="12_jugg"]
+[ext_resource type="Script" uid="uid://ch88785eo0ojd" path="res://scripts/game_manager.gd" id="13_gman"]
+[ext_resource type="Script" uid="uid://dudf0ow1red8g" path="res://scripts/wave_spawner.gd" id="14_wspw"]
+[ext_resource type="PackedScene" path="res://scenes/hud.tscn" id="15_hud"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_p57ef"]
 texture = ExtResource("1_iywne")
@@ -19,86 +25,150 @@ tile_size = Vector2i(32, 32)
 sources/3 = SubResource("TileSetAtlasSource_p57ef")
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_vyxsm"]
-size = Vector2(894, 479)
+size = Vector2(896, 480)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_ghost"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_piston_ghost"]
 atlas = ExtResource("7_u5sy4")
 region = Rect2(0, 0, 32, 64)
 
-[sub_resource type="SpriteFrames" id="SpriteFrames_ghost"]
-animations = [{
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_ghost")
-}],
-"loop": 1,
-"name": &"default",
-"speed": 5.0
-}]
-
 [node name="Game" type="Node2D" unique_id=172776468]
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(512, 376)
 
 [node name="TileMapLayer" type="TileMapLayer" parent="." unique_id=1200271856]
 tile_map_data = PackedByteArray("AAACAAQAAwAAAAAAAAACAAUAAwAAAAAAAAACAAYAAwAAAAAAAAACAAcAAwAAAAAAAAACAAgAAwAAAAAAAAACAAkAAwAAAAAAAAACAAoAAwAAAAAAAAACAAsAAwAAAAAAAAACAAwAAwAAAAAAAAACAA0AAwAAAAAAAAACAA4AAwAAAAAAAAACAA8AAwAAAAAAAAACABAAAwAAAAAAAAACABEAAwAAAAAAAAACABIAAwAAAAAAAAADAAQAAwAAAAAAAAADAAUAAwAAAAAAAAADAAYAAwAAAAAAAAADAAcAAwAAAAAAAAADAAgAAwAAAAAAAAADAAkAAwAAAAAAAAADAAoAAwAAAAAAAAADAAsAAwAAAAAAAAADAAwAAwAAAAAAAAADAA0AAwAAAAAAAAADAA4AAwAAAAAAAAADAA8AAwAAAAAAAAADABAAAwAAAAAAAAADABEAAwAAAAAAAAADABIAAwAAAAAAAAAEAAQAAwAAAAAAAAAEAAUAAwAAAAAAAAAEAAYAAwAAAAAAAAAEAAcAAwAAAAAAAAAEAAgAAwAAAAAAAAAEAAkAAwAAAAAAAAAEAAoAAwAAAAAAAAAEAAsAAwAAAAAAAAAEAAwAAwAAAAAAAAAEAA0AAwAAAAAAAAAEAA4AAwAAAAAAAAAEAA8AAwAAAAAAAAAEABAAAwAAAAAAAAAEABEAAwAAAAAAAAAEABIAAwAAAAAAAAAFAAQAAwAAAAAAAAAFAAUAAwAAAAAAAAAFAAYAAwAAAAAAAAAFAAcAAwAAAAAAAAAFAAgAAwAAAAAAAAAFAAkAAwAAAAAAAAAFAAoAAwAAAAAAAAAFAAsAAwAAAAAAAAAFAAwAAwAAAAAAAAAFAA0AAwAAAAAAAAAFAA4AAwAAAAAAAAAFAA8AAwAAAAAAAAAFABAAAwAAAAAAAAAFABEAAwAAAAAAAAAFABIAAwAAAAAAAAAGAAQAAwAAAAAAAAAGAAUAAwAAAAAAAAAGAAYAAwAAAAAAAAAGAAcAAwAAAAAAAAAGAAgAAwAAAAAAAAAGAAkAAwAAAAAAAAAGAAoAAwAAAAAAAAAGAAsAAwAAAAAAAAAGAAwAAwAAAAAAAAAGAA0AAwAAAAAAAAAGAA4AAwAAAAAAAAAGAA8AAwAAAAAAAAAGABAAAwAAAAAAAAAGABEAAwAAAAAAAAAGABIAAwAAAAAAAAAHAAQAAwAAAAAAAAAHAAUAAwAAAAAAAAAHAAYAAwAAAAAAAAAHAAcAAwAAAAAAAAAHAAgAAwAAAAAAAAAHAAkAAwAAAAAAAAAHAAoAAwAAAAAAAAAHAAsAAwAAAAAAAAAHAAwAAwAAAAAAAAAHAA0AAwAAAAAAAAAHAA4AAwAAAAAAAAAHAA8AAwAAAAAAAAAHABAAAwAAAAAAAAAHABEAAwAAAAAAAAAHABIAAwAAAAAAAAAIAAQAAwAAAAAAAAAIAAUAAwAAAAAAAAAIAAYAAwAAAAAAAAAIAAcAAwAAAAAAAAAIAAgAAwAAAAAAAAAIAAkAAwAAAAAAAAAIAAoAAwAAAAAAAAAIAAsAAwAAAAAAAAAIAAwAAwAAAAAAAAAIAA0AAwAAAAAAAAAIAA4AAwAAAAAAAAAIAA8AAwAAAAAAAAAIABAAAwAAAAAAAAAIABEAAwAAAAAAAAAIABIAAwAAAAAAAAAJAAQAAwAAAAAAAAAJAAUAAwAAAAAAAAAJAAYAAwAAAAAAAAAJAAcAAwAAAAAAAAAJAAgAAwAAAAAAAAAJAAkAAwAAAAAAAAAJAAoAAwAAAAAAAAAJAAsAAwAAAAAAAAAJAAwAAwAAAAAAAAAJAA0AAwAAAAAAAAAJAA4AAwAAAAAAAAAJAA8AAwAAAAAAAAAJABAAAwAAAAAAAAAJABEAAwAAAAAAAAAJABIAAwAAAAAAAAAKAAQAAwAAAAAAAAAKAAUAAwAAAAAAAAAKAAYAAwAAAAAAAAAKAAcAAwAAAAAAAAAKAAgAAwAAAAAAAAAKAAkAAwAAAAAAAAAKAAoAAwAAAAAAAAAKAAsAAwAAAAAAAAAKAAwAAwAAAAAAAAAKAA0AAwAAAAAAAAAKAA4AAwAAAAAAAAAKAA8AAwAAAAAAAAAKABAAAwAAAAAAAAAKABEAAwAAAAAAAAAKABIAAwAAAAAAAAALAAQAAwAAAAAAAAALAAUAAwAAAAAAAAALAAYAAwAAAAAAAAALAAcAAwAAAAAAAAALAAgAAwAAAAAAAAALAAkAAwAAAAAAAAALAAoAAwAAAAAAAAALAAsAAwAAAAAAAAALAAwAAwAAAAAAAAALAA0AAwAAAAAAAAALAA4AAwAAAAAAAAALAA8AAwAAAAAAAAALABAAAwAAAAAAAAALABEAAwAAAAAAAAALABIAAwAAAAAAAAAMAAQAAwAAAAAAAAAMAAUAAwAAAAAAAAAMAAYAAwAAAAAAAAAMAAcAAwAAAAAAAAAMAAgAAwAAAAAAAAAMAAkAAwAAAAAAAAAMAAoAAwAAAAAAAAAMAAsAAwAAAAAAAAAMAAwAAwAAAAAAAAAMAA0AAwAAAAAAAAAMAA4AAwAAAAAAAAAMAA8AAwAAAAAAAAAMABAAAwAAAAAAAAAMABEAAwAAAAAAAAAMABIAAwAAAAAAAAANAAQAAwAAAAAAAAANAAUAAwAAAAAAAAANAAYAAwAAAAAAAAANAAcAAwAAAAAAAAANAAgAAwAAAAAAAAANAAkAAwAAAAAAAAANAAoAAwAAAAAAAAANAAsAAwAAAAAAAAANAAwAAwAAAAAAAAANAA0AAwAAAAAAAAANAA4AAwAAAAAAAAANAA8AAwAAAAAAAAANABAAAwAAAAAAAAANABEAAwAAAAAAAAANABIAAwAAAAAAAAAOAAQAAwAAAAAAAAAOAAUAAwAAAAAAAAAOAAYAAwAAAAAAAAAOAAcAAwAAAAAAAAAOAAgAAwAAAAAAAAAOAAkAAwAAAAAAAAAOAAoAAwAAAAAAAAAOAAsAAwAAAAAAAAAOAAwAAwAAAAAAAAAOAA0AAwAAAAAAAAAOAA4AAwAAAAAAAAAOAA8AAwAAAAAAAAAOABAAAwAAAAAAAAAOABEAAwAAAAAAAAAOABIAAwAAAAAAAAAPAAQAAwAAAAAAAAAPAAUAAwAAAAAAAAAPAAYAAwAAAAAAAAAPAAcAAwAAAAAAAAAPAAgAAwAAAAAAAAAPAAkAAwAAAAAAAAAPAAoAAwAAAAAAAAAPAAsAAwAAAAAAAAAPAAwAAwAAAAAAAAAPAA0AAwAAAAAAAAAPAA4AAwAAAAAAAAAPAA8AAwAAAAAAAAAPABAAAwAAAAAAAAAPABEAAwAAAAAAAAAPABIAAwAAAAAAAAAQAAQAAwAAAAAAAAAQAAUAAwAAAAAAAAAQAAYAAwAAAAAAAAAQAAcAAwAAAAAAAAAQAAgAAwAAAAAAAAAQAAkAAwAAAAAAAAAQAAoAAwAAAAAAAAAQAAsAAwAAAAAAAAAQAAwAAwAAAAAAAAAQAA0AAwAAAAAAAAAQAA4AAwAAAAAAAAAQAA8AAwAAAAAAAAAQABAAAwAAAAAAAAAQABEAAwAAAAAAAAAQABIAAwAAAAAAAAARAAQAAwAAAAAAAAARAAUAAwAAAAAAAAARAAYAAwAAAAAAAAARAAcAAwAAAAAAAAARAAgAAwAAAAAAAAARAAkAAwAAAAAAAAARAAoAAwAAAAAAAAARAAsAAwAAAAAAAAARAAwAAwAAAAAAAAARAA0AAwAAAAAAAAARAA4AAwAAAAAAAAARAA8AAwAAAAAAAAARABAAAwAAAAAAAAARABEAAwAAAAAAAAARABIAAwAAAAAAAAASAAQAAwAAAAAAAAASAAUAAwAAAAAAAAASAAYAAwAAAAAAAAASAAcAAwAAAAAAAAASAAgAAwAAAAAAAAASAAkAAwAAAAAAAAASAAoAAwAAAAAAAAASAAsAAwAAAAAAAAASAAwAAwAAAAAAAAASAA0AAwAAAAAAAAASAA4AAwAAAAAAAAASAA8AAwAAAAAAAAASABAAAwAAAAAAAAASABEAAwAAAAAAAAASABIAAwAAAAAAAAATAAQAAwAAAAAAAAATAAUAAwAAAAAAAAATAAYAAwAAAAAAAAATAAcAAwAAAAAAAAATAAgAAwAAAAAAAAATAAkAAwAAAAAAAAATAAoAAwAAAAAAAAATAAsAAwAAAAAAAAATAAwAAwAAAAAAAAATAA0AAwAAAAAAAAATAA4AAwAAAAAAAAATAA8AAwAAAAAAAAATABAAAwAAAAAAAAATABEAAwAAAAAAAAATABIAAwAAAAAAAAAUAAQAAwAAAAAAAAAUAAUAAwAAAAAAAAAUAAYAAwAAAAAAAAAUAAcAAwAAAAAAAAAUAAgAAwAAAAAAAAAUAAkAAwAAAAAAAAAUAAoAAwAAAAAAAAAUAAsAAwAAAAAAAAAUAAwAAwAAAAAAAAAUAA0AAwAAAAAAAAAUAA4AAwAAAAAAAAAUAA8AAwAAAAAAAAAUABAAAwAAAAAAAAAUABEAAwAAAAAAAAAUABIAAwAAAAAAAAAVAAQAAwAAAAAAAAAVAAUAAwAAAAAAAAAVAAYAAwAAAAAAAAAVAAcAAwAAAAAAAAAVAAgAAwAAAAAAAAAVAAkAAwAAAAAAAAAVAAoAAwAAAAAAAAAVAAsAAwAAAAAAAAAVAAwAAwAAAAAAAAAVAA0AAwAAAAAAAAAVAA4AAwAAAAAAAAAVAA8AAwAAAAAAAAAVABAAAwAAAAAAAAAVABEAAwAAAAAAAAAVABIAAwAAAAAAAAAWAAQAAwAAAAAAAAAWAAUAAwAAAAAAAAAWAAYAAwAAAAAAAAAWAAcAAwAAAAAAAAAWAAgAAwAAAAAAAAAWAAkAAwAAAAAAAAAWAAoAAwAAAAAAAAAWAAsAAwAAAAAAAAAWAAwAAwAAAAAAAAAWAA0AAwAAAAAAAAAWAA4AAwAAAAAAAAAWAA8AAwAAAAAAAAAWABAAAwAAAAAAAAAWABEAAwAAAAAAAAAWABIAAwAAAAAAAAAXAAQAAwAAAAAAAAAXAAUAAwAAAAAAAAAXAAYAAwAAAAAAAAAXAAcAAwAAAAAAAAAXAAgAAwAAAAAAAAAXAAkAAwAAAAAAAAAXAAoAAwAAAAAAAAAXAAsAAwAAAAAAAAAXAAwAAwAAAAAAAAAXAA0AAwAAAAAAAAAXAA4AAwAAAAAAAAAXAA8AAwAAAAAAAAAXABAAAwAAAAAAAAAXABEAAwAAAAAAAAAXABIAAwAAAAAAAAAYAAQAAwAAAAAAAAAYAAUAAwAAAAAAAAAYAAYAAwAAAAAAAAAYAAcAAwAAAAAAAAAYAAgAAwAAAAAAAAAYAAkAAwAAAAAAAAAYAAoAAwAAAAAAAAAYAAsAAwAAAAAAAAAYAAwAAwAAAAAAAAAYAA0AAwAAAAAAAAAYAA4AAwAAAAAAAAAYAA8AAwAAAAAAAAAYABAAAwAAAAAAAAAYABEAAwAAAAAAAAAYABIAAwAAAAAAAAAZAAQAAwAAAAAAAAAZAAUAAwAAAAAAAAAZAAYAAwAAAAAAAAAZAAcAAwAAAAAAAAAZAAgAAwAAAAAAAAAZAAkAAwAAAAAAAAAZAAoAAwAAAAAAAAAZAAsAAwAAAAAAAAAZAAwAAwAAAAAAAAAZAA0AAwAAAAAAAAAZAA4AAwAAAAAAAAAZAA8AAwAAAAAAAAAZABAAAwAAAAAAAAAZABEAAwAAAAAAAAAZABIAAwAAAAAAAAAaAAQAAwAAAAAAAAAaAAUAAwAAAAAAAAAaAAYAAwAAAAAAAAAaAAcAAwAAAAAAAAAaAAgAAwAAAAAAAAAaAAkAAwAAAAAAAAAaAAoAAwAAAAAAAAAaAAsAAwAAAAAAAAAaAAwAAwAAAAAAAAAaAA0AAwAAAAAAAAAaAA4AAwAAAAAAAAAaAA8AAwAAAAAAAAAaABAAAwAAAAAAAAAaABEAAwAAAAAAAAAaABIAAwAAAAAAAAAbAAQAAwAAAAAAAAAbAAUAAwAAAAAAAAAbAAYAAwAAAAAAAAAbAAcAAwAAAAAAAAAbAAgAAwAAAAAAAAAbAAkAAwAAAAAAAAAbAAoAAwAAAAAAAAAbAAsAAwAAAAAAAAAbAAwAAwAAAAAAAAAbAA0AAwAAAAAAAAAbAA4AAwAAAAAAAAAbAA8AAwAAAAAAAAAbABAAAwAAAAAAAAAbABEAAwAAAAAAAAAbABIAAwAAAAAAAAAcAAQAAwAAAAAAAAAcAAUAAwAAAAAAAAAcAAYAAwAAAAAAAAAcAAcAAwAAAAAAAAAcAAgAAwAAAAAAAAAcAAkAAwAAAAAAAAAcAAoAAwAAAAAAAAAcAAsAAwAAAAAAAAAcAAwAAwAAAAAAAAAcAA0AAwAAAAAAAAAcAA4AAwAAAAAAAAAcAA8AAwAAAAAAAAAcABAAAwAAAAAAAAAcABEAAwAAAAAAAAAcABIAAwAAAAAAAAAdAAQAAwAAAAAAAAAdAAUAAwAAAAAAAAAdAAYAAwAAAAAAAAAdAAcAAwAAAAAAAAAdAAgAAwAAAAAAAAAdAAkAAwAAAAAAAAAdAAoAAwAAAAAAAAAdAAsAAwAAAAAAAAAdAAwAAwAAAAAAAAAdAA0AAwAAAAAAAAAdAA4AAwAAAAAAAAAdAA8AAwAAAAAAAAAdABAAAwAAAAAAAAAdABEAAwAAAAAAAAAdABIAAwAAAAAAAAA=")
 tile_set = SubResource("TileSet_vyxsm")
 rendering_quadrant_size = 32
 
+[node name="ArenaBorder" type="Line2D" parent="."]
+points = PackedVector2Array(64, 128, 960, 128, 960, 608, 64, 608)
+closed = true
+width = 3.0
+default_color = Color(0.85, 0.55, 0.18, 0.9)
+
 [node name="Kernel" parent="." unique_id=679810165 instance=ExtResource("1_uwrxv")]
-position = Vector2(911, 366)
+position = Vector2(512, 368)
 
 [node name="Enemies" type="Node2D" parent="." unique_id=1406160509]
 
-[node name="Pusher5" parent="Enemies" unique_id=1116873662 instance=ExtResource("2_yqjtg")]
-position = Vector2(219, 373)
-
-[node name="Pusher6" parent="Enemies" unique_id=31930704 instance=ExtResource("2_yqjtg")]
-position = Vector2(251, 372)
-
-[node name="Pusher" parent="Enemies" unique_id=923092446 instance=ExtResource("2_yqjtg")]
-position = Vector2(153, 372)
-
-[node name="Pusher2" parent="Enemies" unique_id=2106086036 instance=ExtResource("2_yqjtg")]
-position = Vector2(120, 371)
-
-[node name="Pusher3" parent="Enemies" unique_id=422475725 instance=ExtResource("2_yqjtg")]
-position = Vector2(87, 371)
-
-[node name="Pusher4" parent="Enemies" unique_id=1291788624 instance=ExtResource("2_yqjtg")]
-position = Vector2(186, 373)
-
 [node name="Defenders" type="Node2D" parent="." unique_id=1670609904]
 
-[node name="Boundaries" type="Area2D" parent="." unique_id=378089794 node_paths=PackedStringArray("enemies", "kernel", "game", "game_over")]
+[node name="Boundaries" type="Area2D" parent="." unique_id=378089794]
+collision_layer = 0
+collision_mask = 6
 script = ExtResource("4_lbhrr")
-enemies = NodePath("../Enemies")
-kernel = NodePath("../Kernel")
-game = NodePath("..")
-game_over = NodePath("../Game Over")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Boundaries" unique_id=1420232570]
 position = Vector2(512, 368)
 shape = SubResource("RectangleShape2D_vyxsm")
 metadata/_edit_lock_ = true
 
-[node name="PlacementManager" type="Node2D" parent="." unique_id=399912150 node_paths=PackedStringArray("tilemap", "defenders_container", "kernel")]
+[node name="WaveSpawner" type="Node2D" parent="." node_paths=PackedStringArray("enemies_container", "kernel")]
+script = ExtResource("14_wspw")
+enemies_container = NodePath("../Enemies")
+kernel = NodePath("../Kernel")
+pusher_scene = ExtResource("2_yqjtg")
+juggernaut_scene = ExtResource("12_jugg")
+
+[node name="SpawnTimer" type="Timer" parent="WaveSpawner"]
+wait_time = 1.2
+
+[node name="WaveTimer" type="Timer" parent="WaveSpawner"]
+wait_time = 20.0
+one_shot = true
+
+[node name="SpawnPoints" type="Node2D" parent="WaveSpawner"]
+
+[node name="North1" type="Marker2D" parent="WaveSpawner/SpawnPoints"]
+position = Vector2(368, 160)
+
+[node name="Arrow" type="Polygon2D" parent="WaveSpawner/SpawnPoints/North1"]
+color = Color(1, 0.28, 0.22, 0.9)
+polygon = PackedVector2Array(-8, -7, 8, -7, 0, 7)
+
+[node name="North2" type="Marker2D" parent="WaveSpawner/SpawnPoints"]
+position = Vector2(656, 160)
+
+[node name="Arrow" type="Polygon2D" parent="WaveSpawner/SpawnPoints/North2"]
+color = Color(1, 0.28, 0.22, 0.9)
+polygon = PackedVector2Array(-8, -7, 8, -7, 0, 7)
+
+[node name="South1" type="Marker2D" parent="WaveSpawner/SpawnPoints"]
+position = Vector2(368, 576)
+
+[node name="Arrow" type="Polygon2D" parent="WaveSpawner/SpawnPoints/South1"]
+color = Color(1, 0.28, 0.22, 0.9)
+polygon = PackedVector2Array(-8, 7, 8, 7, 0, -7)
+
+[node name="South2" type="Marker2D" parent="WaveSpawner/SpawnPoints"]
+position = Vector2(656, 576)
+
+[node name="Arrow" type="Polygon2D" parent="WaveSpawner/SpawnPoints/South2"]
+color = Color(1, 0.28, 0.22, 0.9)
+polygon = PackedVector2Array(-8, 7, 8, 7, 0, -7)
+
+[node name="West1" type="Marker2D" parent="WaveSpawner/SpawnPoints"]
+position = Vector2(96, 272)
+
+[node name="Arrow" type="Polygon2D" parent="WaveSpawner/SpawnPoints/West1"]
+color = Color(1, 0.28, 0.22, 0.9)
+polygon = PackedVector2Array(-7, -8, -7, 8, 7, 0)
+
+[node name="West2" type="Marker2D" parent="WaveSpawner/SpawnPoints"]
+position = Vector2(96, 464)
+
+[node name="Arrow" type="Polygon2D" parent="WaveSpawner/SpawnPoints/West2"]
+color = Color(1, 0.28, 0.22, 0.9)
+polygon = PackedVector2Array(-7, -8, -7, 8, 7, 0)
+
+[node name="East1" type="Marker2D" parent="WaveSpawner/SpawnPoints"]
+position = Vector2(928, 272)
+
+[node name="Arrow" type="Polygon2D" parent="WaveSpawner/SpawnPoints/East1"]
+color = Color(1, 0.28, 0.22, 0.9)
+polygon = PackedVector2Array(7, -8, 7, 8, -7, 0)
+
+[node name="East2" type="Marker2D" parent="WaveSpawner/SpawnPoints"]
+position = Vector2(928, 464)
+
+[node name="Arrow" type="Polygon2D" parent="WaveSpawner/SpawnPoints/East2"]
+color = Color(1, 0.28, 0.22, 0.9)
+polygon = PackedVector2Array(7, -8, 7, 8, -7, 0)
+
+[node name="HUD" parent="." node_paths=PackedStringArray("game_manager", "placement_manager", "wave_spawner") instance=ExtResource("15_hud")]
+game_manager = NodePath("../GameManager")
+placement_manager = NodePath("../PlacementManager")
+wave_spawner = NodePath("../WaveSpawner")
+
+[node name="PlacementManager" type="Node2D" parent="." unique_id=399912150 node_paths=PackedStringArray("tilemap", "defenders_container", "enemies_container", "kernel", "game_manager")]
 script = ExtResource("6_p57ef")
 tilemap = NodePath("../TileMapLayer")
 defenders_container = NodePath("../Defenders")
+enemies_container = NodePath("../Enemies")
 kernel = NodePath("../Kernel")
-piston_scene = ExtResource("3_lnu2h")
+game_manager = NodePath("../GameManager")
+tower_scenes = Array[PackedScene]([ExtResource("3_lnu2h"), ExtResource("9_bump")])
+tower_textures = Array[Texture2D]([SubResource("AtlasTexture_piston_ghost"), ExtResource("8_bump_tex")])
 
 [node name="GhostPreview" type="Node2D" parent="PlacementManager" unique_id=110258959]
 
-[node name="Sprite2D" type="AnimatedSprite2D" parent="PlacementManager/GhostPreview" unique_id=30288575]
-texture_filter = 1
-sprite_frames = SubResource("SpriteFrames_ghost")
+[node name="Sprite2D" type="Sprite2D" parent="PlacementManager/GhostPreview" unique_id=30288575]
+texture = SubResource("AtlasTexture_piston_ghost")
+offset = Vector2(0, 16)
 
-[node name="Game Over" type="Label" parent="." unique_id=2130817448]
-visible = false
-offset_left = 455.0
-offset_top = 193.0
-offset_right = 534.0
-offset_bottom = 216.0
-text = "You Lose"
+[node name="GameManager" type="Node" parent="." node_paths=PackedStringArray("wave_spawner")]
+script = ExtResource("13_gman")
+wave_spawner = NodePath("../WaveSpawner")
 
 [connection signal="body_exited" from="Boundaries" to="Boundaries" method="_on_body_exited"]
+[connection signal="enemy_fell" from="Boundaries" to="GameManager" method="_on_boundaries_enemy_fell"]
+[connection signal="kernel_fell" from="Boundaries" to="GameManager" method="_on_boundaries_kernel_fell"]
+[connection signal="timeout" from="WaveSpawner/SpawnTimer" to="WaveSpawner" method="_on_spawn_timer_timeout"]
+[connection signal="timeout" from="WaveSpawner/WaveTimer" to="WaveSpawner" method="_on_wave_timer_timeout"]
+[connection signal="wave_cleared" from="WaveSpawner" to="GameManager" method="_on_wave_spawner_wave_cleared"]
+[connection signal="tower_selected" from="PlacementManager" to="HUD" method="_on_tower_selected"]
+[connection signal="credits_changed" from="GameManager" to="HUD" method="_on_credits_changed"]
+[connection signal="game_ended" from="GameManager" to="HUD" method="_on_game_ended"]
+[connection signal="game_ended" from="GameManager" to="PlacementManager" method="_on_game_ended"]
+[connection signal="wave_changed" from="GameManager" to="HUD" method="_on_wave_changed"]

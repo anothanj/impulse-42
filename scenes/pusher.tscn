@@ -3,14 +3,14 @@
 [ext_resource type="Texture2D" uid="uid://cyrtqqspt7u5f" path="res://assets/pusher.png" id="1_4j1f4"]
 [ext_resource type="Script" uid="uid://fp8jmni3g6na" path="res://scripts/pusher.gd" id="2_xqhj7"]
 
-[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_xqhj7"]
-
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_vyxsm"]
-size = Vector2(32, 32)
+size = Vector2(16, 16)
 
 [node name="Pusher" type="RigidBody2D" unique_id=923092446]
-mass = 3.0
-physics_material_override = SubResource("PhysicsMaterial_xqhj7")
+collision_layer = 4
+collision_mask = 7
+mass = 2.5
+linear_damp = 0.6
 script = ExtResource("2_xqhj7")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1133619611]
@@ -18,5 +18,4 @@ scale = Vector2(0.5, 0.5)
 texture = ExtResource("1_4j1f4")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=242710170]
-scale = Vector2(0.5, 0.5)
 shape = SubResource("RectangleShape2D_vyxsm")

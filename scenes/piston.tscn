@@ -20,7 +20,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_vnmsg")
 }],
-"loop": 0,
+"loop": false,
 "name": &"default",
 "speed": 15.0
 }]
@@ -32,21 +32,29 @@ size = Vector2(32, 32)
 size = Vector2(32, 32)
 
 [node name="Piston" type="StaticBody2D" unique_id=872141968]
+collision_layer = 1
+collision_mask = 0
 script = ExtResource("1_8y48j")
 
 [node name="Sprite2D" type="AnimatedSprite2D" parent="." unique_id=1861592978]
-texture_filter = 1
+position = Vector2(0, 16)
 sprite_frames = SubResource("SpriteFrames_vyxsm")
-frame_progress = 0.9108354
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=908697475]
-position = Vector2(0, -16)
 shape = SubResource("RectangleShape2D_a3usv")
 
 [node name="TriggerArea" type="Area2D" parent="." unique_id=1045433538]
+collision_layer = 0
+collision_mask = 6
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="TriggerArea" unique_id=1580687782]
-position = Vector2(0, 16)
+position = Vector2(0, 32)
 shape = SubResource("RectangleShape2D_vyxsm")
 
+[node name="CooldownTimer" type="Timer" parent="."]
+wait_time = 0.45
+one_shot = true
+
+[connection signal="animation_finished" from="Sprite2D" to="." method="_on_sprite_2d_animation_finished"]
 [connection signal="body_entered" from="TriggerArea" to="." method="_on_trigger_area_body_entered"]
+[connection signal="timeout" from="CooldownTimer" to="." method="_on_cooldown_timer_timeout"]
